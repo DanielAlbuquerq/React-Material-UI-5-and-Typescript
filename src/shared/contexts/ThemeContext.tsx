@@ -1,5 +1,4 @@
 import React, {
-  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -22,6 +21,7 @@ const ThemeContext = createContext({} as IThemeContextData)
 console.log(ThemeContext)
 
 export const useAppThemeContext = () => {
+  console.log("useAppActivate")
   return useContext(ThemeContext)
 }
 

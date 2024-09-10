@@ -1,8 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Button } from "@mui/material"
 import { Route, Routes, Navigate } from "react-router-dom"
 import { useAppThemeContext } from "../shared/contexts"
 
-//I named it AppRoutes to avoid conflict with new features of react-router-dom-v6
+//I name it as AppRoutes to avoid conflict with new features of react-router-dom-v6
 export const AppRoutes = () => {
   const { toggleTheme } = useAppThemeContext()
   return (
@@ -10,6 +11,7 @@ export const AppRoutes = () => {
       <Route
         path='/initial-page'
         element={
+          // eslint-disable-next-line react/react-in-jsx-scope
           <Button variant='contained' onClick={toggleTheme}>
             Click here
           </Button>
