@@ -8,19 +8,29 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
   useTheme,
 } from "@mui/material"
 import React from "react"
+import { useDrawerContext } from "../../contexts"
 
+//-------
 type Props = {
   children?: React.ReactNode
 }
+//------
 
 export const Sidebar: React.FC<Props> = ({ children }) => {
   const theme = useTheme()
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"))
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext()
   return (
     <>
-      <Drawer variant='permanent'>
+      <Drawer
+        open={isDrawerOpen}
+        onClose={toggleDrawerOpen}
+        variant={smDown ? "temporary" : "permanent"}
+      >
         <Box
           width={theme.spacing(28)}
           height='100%'
@@ -53,7 +63,7 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
           </Box>
         </Box>
       </Drawer>
-      <Box height='100vh' marginLeft={theme.spacing(28)}>
+      <Box height='100vh' marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>
