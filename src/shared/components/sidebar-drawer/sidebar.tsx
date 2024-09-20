@@ -13,6 +13,7 @@ import {
 } from "@mui/material"
 import React from "react"
 import { useDrawerContext } from "../../contexts"
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"
 
 //-------
 type Props = {
@@ -20,10 +21,48 @@ type Props = {
 }
 //------
 
+interface IListItemLinkProps {
+  to: string
+  icon: string
+  label: string
+  onClick: (() => void) | undefined
+}
+
+const ListItemLink: React.FC<IListItemLinkProps> = ({
+  icon,
+  label,
+  onClick,
+  to,
+}) => {
+  //
+  const navigate = useNavigate()
+
+  //path hook from react
+  const resolvedPath = useResolvedPath(to)
+  console.log(resolvedPath)
+  const match = useMatch({ path: resolvedPath.pathname, end: false })
+
+  //
+  const handleClick = () => {
+    navigate(to)
+    onClick?.()
+  }
+  //
+  return (
+    <ListItemButton selected={!!match} onClick={handleClick}>
+      <ListItemIcon>
+        <Icon>{icon}</Icon>
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItemButton>
+  )
+}
+
 export const Sidebar: React.FC<Props> = ({ children }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down("sm"))
-  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext()
+  const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
+
   return (
     <>
       <Drawer
@@ -53,12 +92,15 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
           <Divider />
           <Box flex={1}>
             <List component='nav'>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Icon>home</Icon>
-                </ListItemIcon>
-                <ListItemText primary='initial page' />
-              </ListItemButton>
+              {drawerOptions.map((drawerOption) => (
+                <ListItemLink
+                  key={drawerOption.path}
+                  icon={drawerOption.icon}
+                  to={drawerOption.path}
+                  label={drawerOption.label}
+                  onClick={smDown ? toggleDrawerOpen : undefined}
+                />
+              ))}
             </List>
           </Box>
         </Box>
