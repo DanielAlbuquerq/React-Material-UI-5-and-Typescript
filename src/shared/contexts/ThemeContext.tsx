@@ -8,6 +8,7 @@ import React, {
 import { Box, ThemeProvider } from "@mui/material"
 import { DarkTheme, LightTheme } from "../../themes"
 
+//Typing____________Start________________
 interface IThemeContextData {
   themeName: "light" | "dark"
   toggleTheme: () => void
@@ -16,17 +17,21 @@ interface IThemeContextData {
 type Props = {
   children?: React.ReactNode
 }
+//___________________End_____________________
 
 const ThemeContext = createContext({} as IThemeContextData)
-console.log(ThemeContext)
 
 export const useAppThemeContext = () => {
-  console.log("useAppActivate")
   return useContext(ThemeContext)
 }
 
+//________________________________Start____________________________
+//Block responsible for set value(useState) and
+//pass this value to useCallback function for changing SetThemeName
+//for a better perfomance
+//and pass the value to useMemo to make a conditional and save it
 export const AppThemeProvider: React.FC<Props> = ({ children }) => {
-  const [themeName, setThemeName] = useState<"light" | "dark">("light")
+  const [themeName, setThemeName] = useState<"light" | "dark">("dark")
 
   const toggleTheme = useCallback(() => {
     setThemeName((oldThemeName) =>
@@ -38,6 +43,7 @@ export const AppThemeProvider: React.FC<Props> = ({ children }) => {
     if (themeName === "light") return LightTheme
     return DarkTheme
   }, [themeName])
+  //________________________________End____________________________
 
   return (
     <ThemeContext.Provider value={{ themeName, toggleTheme }}>

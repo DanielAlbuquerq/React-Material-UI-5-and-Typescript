@@ -11,8 +11,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
+import ContrastOutlinedIcon from "@mui/icons-material/ContrastOutlined"
 import React from "react"
-import { useDrawerContext } from "../../contexts"
+import { useAppThemeContext, useDrawerContext } from "../../contexts"
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"
 
 //-------
@@ -62,6 +63,7 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down("sm"))
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
+  const { toggleTheme } = useAppThemeContext()
 
   return (
     <>
@@ -101,6 +103,16 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
                   onClick={smDown ? toggleDrawerOpen : undefined}
                 />
               ))}
+            </List>
+          </Box>
+          <Box>
+            <List component='nav'>
+              <ListItemButton onClick={toggleTheme}>
+                <ListItemIcon>
+                  <Icon>contrast_icon</Icon>
+                </ListItemIcon>
+                <ListItemText primary='theme button' />
+              </ListItemButton>
             </List>
           </Box>
         </Box>
