@@ -7,6 +7,7 @@ import { Dashboard } from "../pages"
 //I name it as AppRoutes to avoid conflict with new features of react-router-dom-v6
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext()
+
   useEffect(() => {
     setDrawerOptions([
       {
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
       },
     ])
   }, [])
+
   return (
     <Routes>
       <Route

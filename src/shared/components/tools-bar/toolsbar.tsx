@@ -1,11 +1,35 @@
-import { Margin } from "@mui/icons-material"
-import { Box, Button, Paper, TextField, useTheme } from "@mui/material"
+import { Box, Button, Paper, useTheme, TextField, Icon } from "@mui/material"
 import React from "react"
 
-export const Toolsbar: React.FC = () => {
+// 1. Interface_____________Start__________________
+
+interface IToolsbarProps {
+  searchText?: string
+  showSearchInput?: boolean
+  valueOnChange?: (newText: string) => void
+
+  textNewButton?: string
+  showNewButton?: boolean
+  onClickButton?: () => void
+}
+
+//______________________End_____________________
+
+export const Toolsbar: React.FC<IToolsbarProps> = ({
+  // 2. setting start values to types from interface________start__
+  searchText = " ",
+  showSearchInput = false,
+  valueOnChange,
+  //__
+  textNewButton = "New",
+  showNewButton = true,
+  onClickButton,
+  //__________________________________End_________
+}) => {
   const theme = useTheme()
 
   return (
+    // 3. ________Style Block _____ Start______________
     <Box
       height={theme.spacing(5)}
       alignItems='center'
@@ -16,8 +40,29 @@ export const Toolsbar: React.FC = () => {
       display='flex'
       component={Paper}
     >
-      <TextField placeholder='search...' size='small' />
-      <Button>New</Button>
+      {showSearchInput && (
+        <TextField
+          value={searchText}
+          onChange={(e) => valueOnChange?.(e.target.value)}
+          placeholder='search...'
+          size='small'
+        />
+      )}
+
+      <Box flex={1} display='flex' justifyContent='end'>
+        {showNewButton && (
+          <Button
+            disableElevation
+            color='primary'
+            variant='contained'
+            onClick={onClickButton}
+            endIcon={<Icon>add</Icon>}
+          >
+            {textNewButton}
+          </Button>
+        )}
+      </Box>
     </Box>
   )
+  //______Style Block______________End__________
 }

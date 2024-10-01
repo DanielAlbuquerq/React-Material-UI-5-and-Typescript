@@ -1,12 +1,12 @@
 import React, { createContext, useCallback, useContext, useState } from "react"
 
-// Interfaces & Types______
+// 1. Interface and Type______Start___________
 interface IDrawerOption {
   path: string
   label: string
   icon: string
 }
-
+//_____
 interface IDrawerContextData {
   isDrawerOpen: boolean
   toggleDrawerOpen: () => void
@@ -17,9 +17,9 @@ interface IDrawerContextData {
 type Props = {
   children?: React.ReactNode
 }
-//_____________________________________
+//_________________End____________________
 
-//Context Hook Function___________
+//2. ______Context Hook Function_________Start_____
 const DrawerContext = createContext({} as IDrawerContextData)
 console.log(DrawerContext)
 
@@ -27,13 +27,15 @@ export const useDrawerContext = () => {
   console.log("DrawerContextActivated")
   return useContext(DrawerContext)
 }
-//_________________________________
+//Context created. Values saved on '<DrawerContext.Provider/>'
+//_________________________________End_______________
 
 //
 export const DrawerProvider: React.FC<Props> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [drawerOptions, setDrawerOptions] = useState<IDrawerOption[]>([])
 
+  //useCallback for a better perfomance
   const toggleDrawerOpen = useCallback(() => {
     setIsDrawerOpen((oldDrawerOpen) => !oldDrawerOpen)
   }, [])

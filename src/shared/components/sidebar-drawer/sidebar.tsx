@@ -11,7 +11,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import ContrastOutlinedIcon from "@mui/icons-material/ContrastOutlined"
 import React from "react"
 import { useAppThemeContext, useDrawerContext } from "../../contexts"
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"
