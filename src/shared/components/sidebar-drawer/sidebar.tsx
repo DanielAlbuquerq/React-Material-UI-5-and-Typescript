@@ -11,11 +11,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import React from "react"
+import React, { useState } from "react"
 import { useAppThemeContext, useDrawerContext } from "../../contexts"
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"
 
-//-------
+//____Interface________start_____________
 type Props = {
   children?: React.ReactNode
 }
@@ -28,26 +28,33 @@ interface IListItemLinkProps {
   onClick: (() => void) | undefined
 }
 
+interface clickedType {
+  clientX: number
+  clientY: number
+}
+
+//_______________END__________________________
+
 const ListItemLink: React.FC<IListItemLinkProps> = ({
   icon,
   label,
   onClick,
   to,
 }) => {
-  //
   const navigate = useNavigate()
-
-  //path hook from react
+  //Funtions___States____________START____
+  //path-hook from react
   const resolvedPath = useResolvedPath(to)
   console.log(resolvedPath)
   const match = useMatch({ path: resolvedPath.pathname, end: false })
+  //
 
   //
   const handleClick = () => {
     navigate(to)
     onClick?.()
   }
-  //
+  //Funtions___States____________END____
   return (
     <ListItemButton selected={!!match} onClick={handleClick}>
       <ListItemIcon>
@@ -63,6 +70,14 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"))
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
   const { toggleTheme } = useAppThemeContext()
+  const [clickedPoints, setClickedPoints] = useState<clickedType[]>([])
+
+  function whenClick(e: React.MouseEvent<HTMLElement>) {
+    const { clientX, clientY } = e
+
+    setClickedPoints([...clickedPoints, { clientX, clientY }])
+    console.log(JSON.stringify(clickedPoints))
+  }
 
   return (
     <>
@@ -71,7 +86,11 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
         onClose={toggleDrawerOpen}
         variant={smDown ? "temporary" : "permanent"}
       >
+        {clickedPoints.map((item, index) => {
+          return <div key={index}>Clicked Item</div>
+        })}
         <Box
+          onClick={whenClick}
           width={theme.spacing(28)}
           height='100%'
           display='flex'
