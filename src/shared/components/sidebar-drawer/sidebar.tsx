@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { useAppThemeContext, useDrawerContext } from "../../contexts"
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom"
 
@@ -48,12 +48,11 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({
   console.log(resolvedPath)
   const match = useMatch({ path: resolvedPath.pathname, end: false })
   //
-
-  //
   const handleClick = () => {
     navigate(to)
     onClick?.()
   }
+
   //Funtions___States____________END____
   return (
     <ListItemButton selected={!!match} onClick={handleClick}>
@@ -72,6 +71,13 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
   const { toggleTheme } = useAppThemeContext()
   const [clickedPoints, setClickedPoints] = useState<clickedType[]>([])
 
+  const handleUndo = () => {
+    const newArrayOfPoint = [...clickedPoints]
+    newArrayOfPoint.pop()
+    console.log("deleted")
+    setClickedPoints(newArrayOfPoint)
+  }
+
   function whenClick(e: React.MouseEvent<HTMLElement>) {
     const { clientX, clientY } = e
 
@@ -86,9 +92,25 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
         onClose={toggleDrawerOpen}
         variant={smDown ? "temporary" : "permanent"}
       >
-        {clickedPoints.map((item, index) => {
-          return <div key={index}>Clicked Item</div>
+        <button disabled={clickedPoints.length === 0} onClick={handleUndo}>
+          Undo
+        </button>
+        {/* challenge */}
+        {clickedPoints.map((clicked, index) => {
+          return (
+            <div
+              style={{
+                position: "absolute",
+                left: clicked.clientX,
+                right: clicked.clientY,
+              }}
+              key={index}
+            >
+              0
+            </div>
+          )
         })}
+
         <Box
           onClick={whenClick}
           width={theme.spacing(28)}
