@@ -69,20 +69,37 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"))
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
   const { toggleTheme } = useAppThemeContext()
-  const [clickedPoints, setClickedPoints] = useState<clickedType[]>([])
 
-  const handleUndo = () => {
-    const newArrayOfPoint = [...clickedPoints]
-    newArrayOfPoint.pop()
-    console.log("deleted")
-    setClickedPoints(newArrayOfPoint)
-  }
+  const [clickedPoints, setClickedPoints] = useState<clickedType[]>([])
+  const [clickedPointsRedo, setClickedPointsRedo] = useState<clickedType[]>([])
 
   function whenClick(e: React.MouseEvent<HTMLElement>) {
     const { clientX, clientY } = e
 
     setClickedPoints([...clickedPoints, { clientX, clientY }])
     console.log(JSON.stringify(clickedPoints))
+  }
+
+  const handleUndo = () => {
+    const newArrayOfPoint = [...clickedPoints]
+    const undoPoint = newArrayOfPoint.pop()
+    console.log(undoPoint)
+
+    if (!undoPoint) return
+    setClickedPoints(newArrayOfPoint)
+    setClickedPointsRedo([...clickedPointsRedo, undoPoint])
+  }
+
+  const handleRedo = () => {
+    const newUndoPoints = [...clickedPointsRedo]
+
+    console.log(JSON.stringify(clickedPoints))
+    console.log(JSON.stringify([...clickedPoints]))
+
+    const redoPoint = newUndoPoints.pop()
+    if (!redoPoint) return
+    setClickedPointsRedo(newUndoPoints)
+    setClickedPoints([...clickedPoints, redoPoint])
   }
 
   return (
@@ -92,9 +109,14 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
         onClose={toggleDrawerOpen}
         variant={smDown ? "temporary" : "permanent"}
       >
-        <button disabled={clickedPoints.length === 0} onClick={handleUndo}>
-          Undo
-        </button>
+        <div style={{ paddingTop: "20px" }}>
+          <button disabled={clickedPoints.length === 0} onClick={handleUndo}>
+            Undo
+          </button>
+          <button disabled={clickedPoints.length === 0} onClick={handleRedo}>
+            Redo
+          </button>
+        </div>
         {/* challenge */}
         {clickedPoints.map((clicked, index) => {
           return (
