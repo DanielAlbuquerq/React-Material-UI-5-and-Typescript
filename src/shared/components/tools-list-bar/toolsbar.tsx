@@ -3,7 +3,7 @@ import React from "react"
 
 // 1. Interface_____________Start__________________
 
-interface IToolsbarProps {
+interface IListOfToolsProps {
   searchText?: string
   showSearchInput?: boolean
   valueOnChange?: (newText: string) => void
@@ -15,7 +15,7 @@ interface IToolsbarProps {
 
 //______________________End_____________________
 
-export const Toolsbar: React.FC<IToolsbarProps> = ({
+export const ListOfTools: React.FC<IListOfToolsProps> = ({
   // 2. setting start values to types from interface________start__
   searchText = " ",
   showSearchInput = false,
@@ -24,7 +24,7 @@ export const Toolsbar: React.FC<IToolsbarProps> = ({
   textNewButton = "New",
   showNewButton = true,
   onClickButton,
-  //__________________________________End_________
+  //__________________________________End______________
 }) => {
   const theme = useTheme()
 

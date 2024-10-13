@@ -28,11 +28,6 @@ interface IListItemLinkProps {
   onClick: (() => void) | undefined
 }
 
-interface clickedType {
-  clientX: number
-  clientY: number
-}
-
 //_______________END__________________________
 
 const ListItemLink: React.FC<IListItemLinkProps> = ({
@@ -70,38 +65,6 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
   const { toggleTheme } = useAppThemeContext()
 
-  const [clickedPoints, setClickedPoints] = useState<clickedType[]>([])
-  const [clickedPointsRedo, setClickedPointsRedo] = useState<clickedType[]>([])
-
-  function whenClick(e: React.MouseEvent<HTMLElement>) {
-    const { clientX, clientY } = e
-
-    setClickedPoints([...clickedPoints, { clientX, clientY }])
-    console.log(JSON.stringify(clickedPoints))
-  }
-
-  const handleUndo = () => {
-    const newArrayOfPoint = [...clickedPoints]
-    const undoPoint = newArrayOfPoint.pop()
-    console.log(undoPoint)
-
-    if (!undoPoint) return
-    setClickedPoints(newArrayOfPoint)
-    setClickedPointsRedo([...clickedPointsRedo, undoPoint])
-  }
-
-  const handleRedo = () => {
-    const newUndoPoints = [...clickedPointsRedo]
-
-    console.log(JSON.stringify(clickedPoints))
-    console.log(JSON.stringify([...clickedPoints]))
-
-    const redoPoint = newUndoPoints.pop()
-    if (!redoPoint) return
-    setClickedPointsRedo(newUndoPoints)
-    setClickedPoints([...clickedPoints, redoPoint])
-  }
-
   return (
     <>
       <Drawer
@@ -109,32 +72,7 @@ export const Sidebar: React.FC<Props> = ({ children }) => {
         onClose={toggleDrawerOpen}
         variant={smDown ? "temporary" : "permanent"}
       >
-        <div style={{ paddingTop: "20px" }}>
-          <button disabled={clickedPoints.length === 0} onClick={handleUndo}>
-            Undo
-          </button>
-          <button disabled={clickedPoints.length === 0} onClick={handleRedo}>
-            Redo
-          </button>
-        </div>
-        {/* challenge */}
-        {clickedPoints.map((clicked, index) => {
-          return (
-            <div
-              style={{
-                position: "absolute",
-                left: clicked.clientX,
-                right: clicked.clientY,
-              }}
-              key={index}
-            >
-              0
-            </div>
-          )
-        })}
-
         <Box
-          onClick={whenClick}
           width={theme.spacing(28)}
           height='100%'
           display='flex'

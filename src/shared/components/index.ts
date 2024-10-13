@@ -1,2 +1,2 @@
 export * from "./sidebar-drawer/sidebar"
-export * from "./tools-bar/toolsbar"
+export * from "./tools-list-bar/toolsbar"

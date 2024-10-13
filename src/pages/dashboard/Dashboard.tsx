@@ -1,11 +1,11 @@
 import { PageBaseLayout } from "../../shared/layouts"
 import React from "react"
-import { Toolsbar } from "../../shared/components"
+import { ListOfTools } from "../../shared/components"
 
 export const Dashboard = () => {
   return (
     <PageBaseLayout title='initial-page'>
-      <Toolsbar showSearchInput />
+      <ListOfTools showSearchInput />
     </PageBaseLayout>
   )
 }
